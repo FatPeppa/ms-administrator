@@ -1,3 +1,33 @@
+server:
+  port: ${WEB-SERVER-PORT:6215}
+
+grpc:
+  server:
+    port: ${GRPC-SERVER-PORT:6214}
+    max-inbound-message-size: ${MAX-INBOUND-MESSAGE-SIZE:2MB}
+
 spring:
   application:
     name: ms-administrator
+  r2dbc:
+    url: r2dbc:postgresql://${DB-HOST:localhost}:${DB-PORT:6200}
+    name: ${DB-NAME:administrator_db}
+    password: ${DB-PASSWORD:123}
+    username: ${DB-USERNAME:root}
+    pool:
+      initial-size: ${DB-POOL-INITIAL-SIZE:3}
+      max-size: ${DB-POOL-MAX-SIZE:10}
+      max-idle-time: ${DB-POOL-MAX-LIFETIME:30m}
+  sql:
+    init:
+      mode: ${DB-INIT-MODE:never} #Режим автоматического запуска DDL-скрипта Б
+      continue-on-error: false
+      encoding: UTF-8
+      schema-locations: classpath*:schema.sql
+
+logging:
+  level:
+    root: ${DEFAULT-LOGGING-LEVEL:INFO} #Уровень логирования сервиса. Возможные значения: ERROR / WARN / INFO / DEBUG / TRACE
+
+debug:
+  ${DEBUG:false} #Переключатель режима отладки сервиса. Возможные значения: true (режим отладки) / false (обычный режим)
